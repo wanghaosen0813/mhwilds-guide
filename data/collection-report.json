@@ -1,0 +1,38 @@
+{
+  "checked": "2026-11-13",
+  "counts": {
+    "monsters": 34,
+    "weaponTypes": 14,
+    "weapons": 1188,
+    "armorSets": 183,
+    "armors": 714,
+    "items": 774,
+    "skills": 195,
+    "maps": 5,
+    "camps": 47,
+    "mapPoints": 1514
+  },
+  "images": 679,
+  "validation": {
+    "uniqueIds": {
+      "monsters": true,
+      "weaponTypes": true,
+      "weapons": true,
+      "armorSets": true,
+      "armors": true,
+      "items": true,
+      "skills": true,
+      "maps": true,
+      "camps": true,
+      "mapPoints": true
+    },
+    "monsterDropRows": 1341,
+    "allDropItemsExist": true,
+    "allCraftingItemsExist": true,
+    "allCoordinatesInBounds": true,
+    "allCampsHaveSafety": true,
+    "downloadedImages": 679,
+    "totalAssetBytes": 10692883
+  },
+  "errors": []
+}

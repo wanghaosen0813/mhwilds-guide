@@ -1,0 +1,17 @@
+{
+  "name": "荒野手记",
+  "domain": "mhwilds.net",
+  "url": "https://mhwilds.net",
+  "language": "zh-CN",
+  "contactEmail": "",
+  "repository": "https://github.com/wanghaosen0813/mhwilds-guide",
+  "ads": {
+    "enabled": false,
+    "publisherId": "",
+    "cmpReady": false,
+    "slots": {
+      "article": "",
+      "listing": ""
+    }
+  }
+}

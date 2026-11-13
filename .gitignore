@@ -1,0 +1,8 @@
+dist/
+research/
+node_modules/
+.env*
+*.log
+qa/
+.tools/
+data/.collection-cache/
