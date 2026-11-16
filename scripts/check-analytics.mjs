@@ -53,7 +53,10 @@ test('Allow loads once and configures one sanitized page view with ads denied', 
   const b = browser(); b.allow(); b.allow(); assert.equal(b.scripts.length, 1); b.loaded(); b.loaded();
   const commands = b.commands(), configs = commands.filter(([name]) => name === 'config');
   assert.equal(configs.length, 1); assert.equal(configs[0][1], id);
-  const options = configs[0][2]; assert.equal(options.send_page_view, true);
+  const options = configs[0][2]; assert.equal(options.send_page_view, false);
+  const views = commands.filter(([name, type]) => name === 'event' && type === 'page_view');
+  assert.equal(views.length, 1); assert.equal(views[0][2].page_location, 'https://mhwilds.net/search/');
+  assert.equal(views[0][2].send_to, id);
   assert.equal(options.page_location, 'https://mhwilds.net/search/'); assert.equal(options.page_referrer, 'https://www.google.com/');
   assert.equal(options.cookie_expires, lifetime / 1000); assert.equal(options.cookie_update, false);
   assert.equal(options.allow_google_signals, false); assert.equal(options.allow_ad_personalization_signals, false);
@@ -73,8 +76,10 @@ test('Withdrawal disables immediately, removes only GA cookies and reloads', () 
   assert.ok(b.cookies.every(cookie => /^_ga(?:_RMXH273MTW)?=; Max-Age=0; path=\//.test(cookie)));
   assert.equal(b.commands().at(-1)[2].analytics_storage, 'denied');
 });
-test('A pending tag download cannot configure after withdrawal', () => {
-  const b = browser(); b.allow(); b.deny(); b.loaded(); assert.equal(b.commands().filter(([name]) => name === 'config').length, 0);
+test('A pending tag download cannot re-enable collection after withdrawal', () => {
+  const b = browser(); b.allow(); b.deny(); const commands = b.commands().length; b.loaded();
+  assert.equal(b.window[`ga-disable-${id}`], true); assert.equal(b.commands().length, commands + 1);
+  assert.equal(b.commands().at(-1)[2].analytics_storage, 'denied');
 });
 test('Another tab rejecting or clearing storage revokes active collection', () => {
   for (const value of [null, { choice: 'denied', expiresAt: Date.now() + lifetime }]) {

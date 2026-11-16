@@ -17,7 +17,6 @@
   let memoryChoice = null;
   let storageAvailable = true;
   let requested = false;
-  let configured = false;
   let expiryTimer;
   let opener;
 
@@ -60,26 +59,31 @@
     window.gtag = function () { window.dataLayer.push(arguments); };
     window.gtag('consent', 'default', { ...denied });
     window.gtag('consent', 'update', { ...denied, analytics_storage: 'granted' });
+    const page = {
+      page_location: `${location.origin}${location.pathname}`,
+      page_referrer: safeReferrer(),
+      page_title: document.title
+    };
+    // Queue sanitized defaults before Google executes; onload is too late for initialization.
+    window.gtag('set', { ...page, allow_google_signals: false, allow_ad_personalization_signals: false });
+    window.gtag('js', new Date());
+    window.gtag('config', id, {
+      ...page,
+      send_page_view: false,
+      allow_google_signals: false,
+      allow_ad_personalization_signals: false,
+      cookie_domain: host,
+      cookie_expires: lifetime / 1000,
+      cookie_update: false,
+      cookie_flags: 'SameSite=Lax;Secure'
+    });
+    window.gtag('event', 'page_view', { ...page, send_to: id });
     const tag = document.createElement('script');
     tag.async = true;
     tag.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
     tag.referrerPolicy = 'strict-origin-when-cross-origin';
     tag.onload = () => {
-      if (readChoice()?.choice !== 'granted' || window[disabledKey] || configured) return;
-      configured = true;
-      window.gtag('js', new Date());
-      window.gtag('config', id, {
-        send_page_view: true,
-        page_location: `${location.origin}${location.pathname}`,
-        page_referrer: safeReferrer(),
-        page_title: document.title,
-        allow_google_signals: false,
-        allow_ad_personalization_signals: false,
-        cookie_domain: host,
-        cookie_expires: lifetime / 1000,
-        cookie_update: false,
-        cookie_flags: 'SameSite=Lax;Secure'
-      });
+      if (readChoice()?.choice !== 'granted') stop();
     };
     document.head.appendChild(tag);
   }
