@@ -30,9 +30,23 @@ node scripts/serve.mjs
 
 如 GitHub 账号提供域名验证，请将其给出的唯一 TXT 记录添加到 DNS。不要猜测验证值。不要保留指向其他托管的冲突记录。`public/CNAME` 已设置域名。
 
+## GA4 访问统计
+
+2026-11-16 接入独立资源“荒野手记 · mhwilds.net”，北京时间统计。Web 数据流为“荒野手记 Web”（16348464909），衡量 ID 为 `G-RMXH273MTW`。`site.config.json` 中 `analytics.enabled` 可关闭整站统计入口和脚本。
+
+[打开此站的 Google Analytics 后台](https://analytics.google.com/analytics/web/#/a416273129p564461073/reports/intelligenthome)。资源 ID：564461073；位于现有 GTA6CAMP 账号下，与该账号的其他网站分别统计。
+
+- 首次访问需主动选择“允许统计”才加载 Google 标签；“仅必要”不发送 GA4 请求。每页页脚与隐私页均可重新选择或撤回。
+- 选择保存 180 天；GA Cookie 单独配置为 180 天且不滚动延期。撤回会禁用标签、删除本站 GA Cookie 并刷新已加载标签的页面；其他打开的标签页通过 storage 事件同步。
+- 仅在 HTTPS 的 mhwilds.net / www.mhwilds.net 发送。localhost 预览仍可检查选择界面，不污染报表。
+- 关闭数据流的增强型衡量、Google signals 和广告个性化；发送页面地址时移除 query/hash，来源仅保留 origin。不采集收藏、规划和搜索词自定义事件。基本 page_view、session_start、first_visit、user_engagement 仍会产生。
+- 统计从接入后开始，无法恢复旧流量；拒绝统计、浏览器拦截或 Google 服务不可达的访问不会计入。实时报告用于验证，常规报告需等待处理。测试访问应单独识别，不当作自然用户。
+
+验证：`node scripts/check-analytics.mjs` 覆盖同意/拒绝、撤回、过期、多标签同步、加载竞态、查询参数清理与预览隔离。GA4 的增强型衡量应保持关闭，避免搜索页 history.replaceState 产生额外事件。
+
 ## AdSense 接入
 
-当前广告关闭，网页不会请求 Google 广告或统计脚本；`ads.txt` 不包含虚构发布商 ID。
+当前广告关闭，网页不会请求 Google 广告脚本；`ads.txt` 不包含虚构发布商 ID。
 
 正式接入前：
 

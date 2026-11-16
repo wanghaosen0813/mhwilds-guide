@@ -5,6 +5,10 @@
   "language": "zh-CN",
   "contactEmail": "contact@slayspire2.net",
   "repository": "https://github.com/wanghaosen0813/mhwilds-guide",
+  "analytics": {
+    "enabled": true,
+    "measurementId": "G-RMXH273MTW"
+  },
   "ads": {
     "enabled": false,
     "publisherId": "",
