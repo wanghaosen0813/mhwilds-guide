@@ -54,6 +54,9 @@ test('Allow loads once and configures one sanitized page view with ads denied', 
   const commands = b.commands(), configs = commands.filter(([name]) => name === 'config');
   assert.equal(configs.length, 1); assert.equal(configs[0][1], id);
   const options = configs[0][2]; assert.equal(options.send_page_view, false);
+  const defaults = commands.find(([name]) => name === 'set')[1];
+  assert.equal(defaults.send_page_view, false); assert.equal(defaults.cookie_expires, lifetime / 1000);
+  assert.equal(defaults.cookie_flags, 'SameSite=Lax;Secure');
   const views = commands.filter(([name, type]) => name === 'event' && type === 'page_view');
   assert.equal(views.length, 1); assert.equal(views[0][2].page_location, 'https://mhwilds.net/search/');
   assert.equal(views[0][2].send_to, id);

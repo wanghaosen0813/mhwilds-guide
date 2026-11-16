@@ -64,10 +64,7 @@
       page_referrer: safeReferrer(),
       page_title: document.title
     };
-    // Queue sanitized defaults before Google executes; onload is too late for initialization.
-    window.gtag('set', { ...page, allow_google_signals: false, allow_ad_personalization_signals: false });
-    window.gtag('js', new Date());
-    window.gtag('config', id, {
+    const settings = {
       ...page,
       send_page_view: false,
       allow_google_signals: false,
@@ -76,7 +73,11 @@
       cookie_expires: lifetime / 1000,
       cookie_update: false,
       cookie_flags: 'SameSite=Lax;Secure'
-    });
+    };
+    // Apply defaults before auto-initialization; stream configuration may already exist remotely.
+    window.gtag('set', settings);
+    window.gtag('js', new Date());
+    window.gtag('config', id, settings);
     window.gtag('event', 'page_view', { ...page, send_to: id });
     const tag = document.createElement('script');
     tag.async = true;
